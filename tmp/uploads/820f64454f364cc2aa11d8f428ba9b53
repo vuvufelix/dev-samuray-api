@@ -1,0 +1,354 @@
+Quero que você gere o backend completo e pronto para produção de uma aplicação chamada Huber Cargas Express, desenvolvida em Node.js, Express.js, Sequelize ORM e MySQL.
+
+O sistema conecta produtores (embarcardores) e motoristas, permitindo publicar e transportar cargas, com controle de assinaturas, planos e pagamentos via PIX.
+
+🧩 1. Estrutura do Projeto
+
+Use o padrão MVC:
+
+/config
+/controllers
+/middlewares
+/models
+/routes
+/migrations
+/seeders
+/uploads
+
+
+Tecnologias obrigatórias:
+
+Node.js + Express.js
+
+Sequelize ORM
+
+MySQL
+
+Multer (upload de arquivos)
+
+JWT (autenticação)
+
+bcryptjs (criptografia de senha)
+
+dotenv (variáveis de ambiente)
+
+👤 2. Tipos de Usuários
+
+O app tem três tipos de usuários:
+
+Admin
+
+Pode criar outros admins, gerenciar planos, usuários e cargas.
+
+Produtor (Embarcador)
+
+Pode criar cargas e comprar planos de assinatura.
+
+Motorista
+
+Pode cadastrar veículo, enviar documentos e aceitar cargas.
+
+🔐 3. Autenticação
+
+Crie rotas:
+
+POST /api/auth/register-admin
+
+POST /api/auth/register-producer
+
+POST /api/auth/register-driver
+
+POST /api/auth/login
+
+Use JWT com middleware protect e admin para controle de acesso.
+
+Motoristas devem enviar:
+
+cnhFront, cnhBack, rtrc, rntrc, crlv (arquivos via multer)
+
+Fotos do veículo: vehicleFront, vehicleSide, vehicleBack
+
+Campo driverCategory (A, B, C, D ou E)
+
+🚚 4. Cadastro de Caminhões
+
+Tabela Trucks:
+
+userId
+
+plate
+
+brand
+
+model
+
+year
+
+mainPhoto
+
+extraImages (array ou relação com uploads)
+
+Cada motorista pode ter apenas um caminhão ativo.
+
+📦 5. Cargas (Fretes)
+
+Tabela Cargos:
+
+userId (produtor)
+
+title
+
+description
+
+category (“comum” ou “especial”)
+
+status (aguardando pagamento, disponível, em transporte, entregue)
+
+Upload de fotos (cargoPhoto)
+
+Campos de origem:
+
+originState, originCity, originNeighborhood, originStreet, originNumber, originCEP
+
+Campos de destino:
+
+destState, destCity, destNeighborhood, destStreet, destNumber, destCEP
+
+Dados do destinatário:
+
+recipientName, recipientDocument, entryImage (upload da entrada), digitalSignature (assinatura digital)
+
+price
+
+type (comum/especial)
+
+💳 6. Planos de Assinatura
+
+Tabela Plans com os seguintes registros iniciais:
+
+Nome	Duração	Preço	Descrição
+Individual	Por uso	taxa 12 ou 15% por frete	1 anúncio por vez
+Essencial	3 meses	R$ 1500 ou 3×550	anúncios ilimitados
+Avançado	6 meses	R$ 3000 ou 6×575	melhor custo-benefício
+Elite	12 meses	R$ 5000 ou 12×500	plano completo e anual
+
+Cada plano é cadastrado pelo admin e os produtores podem comprar via PIX.
+
+💰 7. Assinaturas (Subscriptions)
+
+Tabela Subscriptions:
+
+userId
+
+planId
+
+status (pending, active, expired)
+
+startDate
+
+endDate
+
+Fluxo:
+
+POST /api/subscriptions/buy → cria assinatura pending
+
+PUT /api/subscriptions/confirm → confirma pagamento e muda para active
+
+Duração baseada no durationMonths do plano.
+
+💸 8. Pagamentos
+
+Tabela Payments:
+
+userId
+
+subscriptionId (ou cargoId quando for taxa de frete)
+
+method (PIX ou conta)
+
+amount
+
+status (pending, paid)
+
+pixCode (simulado)
+
+createdAt
+
+Crie endpoint:
+
+POST /api/payments para simular pagamento
+
+PUT /api/payments/confirm para confirmar manualmente
+
+📍 9. Rastreamento (Localização)
+
+Crie tabela Locations:
+
+cargoId
+
+driverId
+
+latitude
+
+longitude
+
+timestamp
+
+Use Socket.IO para enviar localização em tempo real entre motorista e produtor:
+
+driver envia updateLocation
+
+producer recebe locationUpdate-<cargoId>
+
+📋 10. Administração
+
+O admin pode:
+
+Listar todos os usuários: GET /api/auth/users
+
+Ver detalhes de um usuário: GET /api/auth/users/:id
+
+Atualizar usuário: PUT /api/auth/users/:id
+
+Deletar usuário: DELETE /api/auth/users/:id
+
+Listar e excluir cargas e assinaturas.
+
+📁 11. Uploads
+
+Usar Multer configurado com pastas:
+
+uploads/
+├── drivers/
+├── trucks/
+├── cargos/
+├── signatures/
+
+
+Aceitar múltiplos arquivos no cadastro de motorista e caminhão.
+
+🧱 12. Banco de Dados (Migrations)
+
+Crie migrations para:
+
+Users
+
+Plans
+
+Subscriptions
+
+Trucks
+
+Cargos
+
+Payments
+
+Locations
+
+Todas com createdAt e updatedAt.
+
+🧪 13. Testes
+
+Crie testes com Jest ou Supertest para rotas:
+
+Login e registro
+
+Compra de plano
+
+Criação e confirmação de carga
+
+Pagamento simulado
+
+Upload de documentos
+
+🧭 14. Seeders Iniciais
+
+Criar seeder:
+
+Admin padrão:
+
+email: admin@hubercargas.com
+
+senha: admin123
+
+Planos padrão (Individual, Essencial, Avançado, Elite)
+
+📦 15. Documentação (opcional)
+
+Usar Swagger ou Postman Collection com:
+
+Auth endpoints
+
+Plans e Subscriptions
+
+Payments
+
+Cargos e Uploads
+
+⚙️ 16. Requisitos de Produção
+
+Ambiente .env com:
+
+DB_HOST=
+DB_USER=
+DB_PASS=
+DB_NAME=
+JWT_SECRET=
+
+
+Executar:
+
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+node app.js
+
+💬 17. Regras de Negócio Importantes
+
+Um produtor só pode publicar cargas se tiver plano ativo.
+
+Se o produtor cancelar antes de motorista aceitar, taxa pode ser reembolsada parcialmente.
+
+O motorista recebe diretamente do produtor, o app não intermedia o frete.
+
+Fretes com valor mínimo:
+
+Comum: R$ 100
+
+Especial: R$ 150
+
+Taxa mínima do app:
+
+Comum: R$ 12
+
+Especial: R$ 15
+
+🧠 Objetivo Final
+
+Gerar toda a estrutura completa e funcional da API Huber Cargas Express, pronta para:
+
+Deploy em servidor Node (Render, Railway, AWS, etc.)
+
+Conexão com MySQL em produção
+
+Integração futura com frontend React Native e painel administrativo
+
+Saída esperada:
+Arquivos completos com código final do backend, incluindo:
+
+Controllers
+
+Models
+
+Routes
+
+Migrations
+
+Seeders
+
+Configurações do Sequelize
+
+Uploads com Multer
+
+Autenticação JWT
+
+Exemplo de execução (app.js)
