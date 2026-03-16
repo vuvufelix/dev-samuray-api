@@ -49,6 +49,7 @@ npm install
 ```
 
 3. **Configure as variáveis de ambiente (.env):**
+
 Crie um arquivo .env na raiz do projeto seguindo o modelo:
 
 ```Snippet de código
