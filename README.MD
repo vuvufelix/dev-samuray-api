@@ -4,23 +4,23 @@ Uma API RESTful completa e performática para gerenciamento de usuários, aprese
 
 ## 🛠️ Tecnologias Utilizadas
 
--- Runtime: Node.js com TypeScript
--- Framework: Express.js
--- ORM: Prisma
--- Banco de Dados: MySQL
--- Autenticação: JSON Web Token (JWT) & BcryptJS
--- Upload de Arquivos: Multer
--- Serviço de E-mail: Nodemailer & Mailtrap
--- Mensageria/Fila: Redis & Bull (ou similar para Queue Jobs)
+- Runtime: Node.js com TypeScript
+- Framework: Express.js
+- ORM: Prisma
+- Banco de Dados: MySQL
+- Autenticação: JSON Web Token (JWT) & BcryptJS
+- Upload de Arquivos: Multer
+- Serviço de E-mail: Nodemailer & Mailtrap
+- Mensageria/Fila: Redis & Bull (ou similar para Queue Jobs)
 
 ## ✨ Funcionalidades
 
--- Autenticação: Registro de usuários e Login com geração de Token JWT.
--- Segurança: Hash de senhas para armazenamento seguro.
--- CRUD de Usuários: Listagem geral, busca por ID, atualizar e remoção de perfis.
--- Upload: Suporte para armazenamento de arquivos via Multer.
--- E-mails de Boas-vindas: Integração com Mailtrap para testes de envio.
--- Background Jobs: Processamento assíncrono de e-mails utilizando Redis para garantir que a API não sofra gargalos de performance.
+- Autenticação: Registro de usuários e Login com geração de Token JWT.
+- Segurança: Hash de senhas para armazenamento seguro.
+- CRUD de Usuários: Listagem geral, busca por ID, atualizar e remoção de perfis.
+- Upload: Suporte para armazenamento de arquivos via Multer.
+- E-mails de Boas-vindas: Integração com Mailtrap para testes de envio.
+- Background Jobs: Processamento assíncrono de e-mails utilizando Redis para garantir que a API não sofra gargalos de performance.
 
 ## 🏗️ Arquitetura de Filas (Redis)
 
@@ -30,9 +30,9 @@ O sistema utiliza uma arquitetura baseada em Jobs para o envio de e-mails. Quand
 
 Antes de começar, você precisará ter instalado em sua máquina:
 
--- Node.js
--- MySQL
--- Redis
+- Node.js
+- MySQL
+- Redis
 
 ## 🚀 Como Executar o Projeto
 
