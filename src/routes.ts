@@ -11,11 +11,11 @@ const upload = multer(multerConfig)
 
 // Sessão
 routes.post("/session", SessionsController.login)
+routes.post("/user", UsersController.create)
 
 routes.use(auth)
 
 routes.get("/user", UsersController.index)
-routes.post("/user", UsersController.create)
 routes.get("/user/:id", UsersController.show)
 routes.put("/user/:id", UsersController.update)
 routes.delete("/user/:id", UsersController.destroy)
